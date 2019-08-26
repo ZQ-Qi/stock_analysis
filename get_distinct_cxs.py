@@ -7,7 +7,7 @@ db = db_pool.get_db_pool(False)
 conn = db.connection()
 cur = conn.cursor()
 
-sql = "select distinct zcxs from event_list union select distinct cwgw from event_list;"
+sql = "select distinct zcxs from event_list where dt > '2009-01-01' union select distinct cwgw from event_list where dt > '2009-01-01';"
 cur.execute(sql)
 unique_res = []
 for line in cur.fetchall():

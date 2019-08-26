@@ -52,17 +52,17 @@ def do_t_test(MODEL_TYPE, REGSET, VAR):
             print('两分类间无差距')
         else:
             print('两分类间存在差距')
-        return ttest_pvalue
+        return [ttest_statistic, ttest_pvalue]
     else:
         print('方差不齐性')
         print('-----进行独立样本t检验-----')
         print(ttest_ind(X, Y, equal_var=False))
-        (ttest_statistic, ttest_pvalue) = ttest_ind(X, Y, equal_var=True)
+        (ttest_statistic, ttest_pvalue) = ttest_ind(X, Y, equal_var=False)
         if ttest_pvalue > 0.05:
             print('两分类间无差距')
         else:
             print('两分类间存在差距')
-        return ttest_pvalue
+        return [ttest_statistic, ttest_pvalue]
 
 
 def analysis_to_xls():
@@ -113,11 +113,11 @@ def analysis_to_xls():
             sheet.write(x_index, 0, label=varname_list[VAR_ID], style=style_yellow)
             y_index = 1
             for REGSET in regset_list:
-                value = do_t_test(MODEL_TYPE, REGSET, VAR)
-                if value <= 0.05:
-                    sheet.write(x_index, y_index, label=value, style=style_green)
+                [t_stat, t_pvalue] = do_t_test(MODEL_TYPE, REGSET, VAR)
+                if t_pvalue <= 0.05:
+                    sheet.write(x_index, y_index, label=t_stat, style=style_green)
                 else:
-                    sheet.write(x_index, y_index, label=value)
+                    sheet.write(x_index, y_index, label=t_stat)
                 y_index += 1
         x_index += 2
 

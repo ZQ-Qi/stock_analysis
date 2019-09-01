@@ -1,7 +1,8 @@
 """
-对event_list表进行分析，得到每个个股的事件序号
+对event_list表进行分析，以每一只股票为单位，计算其自IPO开始，每次发行的先后顺序，并对其进行排序
 """
 import db_pool
+
 
 def cal_stock_order(db_p, gpdm):
     conn = db_p.connection()

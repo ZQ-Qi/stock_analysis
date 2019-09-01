@@ -9,6 +9,11 @@ def deep_analysis_model(q_zcxs, q_cwgw, zcxs, cwgw):
 
 
 def sort_list(mc_list):
+    """
+    去除字符列表中的空格、S、T、*、N，避免干扰
+    :param mc_list:
+    :return:
+    """
     if ' ' in mc_list:
         mc_list.remove(' ')
     if 'S' in mc_list:
@@ -129,7 +134,5 @@ def run():
 
 if __name__ == '__main__':
     run()
-    # is_same_zcxs('中国国际金融有限公司,国泰君安证券股份有限公司,长城证券有限责任公司','中国国际金融有限公司,广州证券股份有限公司,民生证券股份有限公司','辽宁省证券公司','广州证券股份有限公司,民生证券股份有限公司')
-    # db = db_pool.get_db_pool(False)
-    # check_zcxs(db, '000001')
+
 

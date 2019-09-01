@@ -5,6 +5,7 @@ import csv
 import pymysql
 import settings
 
+
 def csv_reader(filename):
     # 读取文件，得到数据表阵列
     with open(filename, 'r', encoding='gbk') as f:
@@ -14,6 +15,7 @@ def csv_reader(filename):
             dataset.append(line)
         f.close()
         return dataset
+
 
 def comma_str(line, flag):  # flag==1 元素不加引号; flag==2 元素加引号
     str = '('

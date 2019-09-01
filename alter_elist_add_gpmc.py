@@ -1,5 +1,5 @@
 """
-为event_list添加股票名称
+为event_list补充股票名称列的数据
 """
 import db_pool
 
@@ -7,9 +7,9 @@ import db_pool
 def get_gpmc(db_p, gpdm, dt, isipo):
     conn = db_p.connection()
     cur = conn.cursor()
-    if isipo == 0:
+    if isipo == 0:      # 如果非IPO事件，从增发实施表中进行查询
         sql = "select gpmc from zfss where gpdm = '{}' and ssggr = '{}';".format(gpdm, dt)
-    else:
+    else:       # IPO事件从新股发行资料表中获取
         sql = "select gpmc from xgfxzl where gpdm = '{}' and ssrq = '{}';".format(gpdm, dt)
     cur.execute(sql)
     result = []
@@ -36,8 +36,8 @@ def get_gpmc(db_p, gpdm, dt, isipo):
     else:       # 若无检索结果，返回Error
         return 'Error'
 
-def update_eventlist_add_fxfs(db_p, dataset):
 
+def update_eventlist_add_fxfs(db_p, dataset):
     conn = db_p.connection()
     cur = conn.cursor()
 
@@ -51,20 +51,20 @@ def update_eventlist_add_fxfs(db_p, dataset):
 
 
 if __name__ == "__main__":
-    db_p = db_pool.get_db_pool(False)
+    db_p = db_pool.get_db_pool(False)   # 初始化数据库连接池
     conn = db_p.connection()
     cur = conn.cursor()
-    sql = "select gpdm, dt, isipo from event_list where gpmc is null;"
+    sql = "select gpdm, dt, isipo from event_list where gpmc is null;"  # 筛选得到股票名称为空的事件的股票代码、日期以及是否为IPO
     cur.execute(sql)
-    e_list = []
+    e_list = []     # 存放待处理的数据集合
     for item in cur.fetchall():
         e_list.append([item[0], item[1], item[2]])
     # print(e_list)
     cur.close()
     conn.close()
-    for i in range(0, len(e_list)):
+    for i in range(0, len(e_list)):     # 遍历待处理的数据集合，获取每条记录的股票名称
         fxfs = get_gpmc(db_p, e_list[i][0], e_list[i][1], e_list[i][2])
         e_list[i].append(fxfs)
     # for item in e_list:
     #     print(item)
-    update_eventlist_add_fxfs(db_p, e_list)
+    update_eventlist_add_fxfs(db_p, e_list)     # 将获取到的股票名称更新进event_list表中

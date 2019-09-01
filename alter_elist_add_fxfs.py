@@ -32,8 +32,8 @@ def get_fxfs_from_zfss(db_p, gpdm, dt):
     else:       # 若无检索结果，返回Error
         return 'Error'
 
-def update_eventlist_add_fxfs(db_p, dataset):
 
+def update_eventlist_add_fxfs(db_p, dataset):
     conn = db_p.connection()
     cur = conn.cursor()
 

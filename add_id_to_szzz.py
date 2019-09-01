@@ -1,3 +1,6 @@
+"""
+为上证综指列表添加编号，作为股市开盘日的时间序列，以便推算股市开盘日的天数
+"""
 import db_pool
 
 db_p = db_pool.get_db_pool(False)

@@ -243,7 +243,7 @@ def get_dataset_by_timespan(db, gpdm, start_dt, end_dt=None, include_ahead=True,
 
 
 def generate_sql_to_insert(gpdm, dt, model_name, regset, res_dict):
-    sql = "insert into reg_res(gpdm, dt, model, regset, var, value) VALUES "
+    sql = "insert into reg_res(gpdm, dt, model, regset, var, value) VALUES "        # 此处代码没问题
     for key, value in res_dict.items():
         sql = sql + " ('{}','{}','{}','{}','{}',{}),".format(gpdm, dt, model_name, regset, key, value)
     sql = sql[:-1] + ';'
@@ -401,13 +401,13 @@ def process_event(db, gpdm, e_date):
 
 def get_event_list(db):
     """
-    获取股票历史事件列表
+    获取股票历史事件列表，排除IPO事件，排除已完成回归的事件
     :param db: 数据库连接池
     :return: [['股票代码','事件日期']...]
     """
     conn = db.connection()
     cur = conn.cursor()
-    sql = "select gpdm, dt from event_list where seq!= 1 and is_reg = 0;"
+    sql = "select gpdm, dt from event_list where seq!= 1 and is_reg = 0;"       # 选取非IPO事件的未回归事件
     cur.execute(sql)
     event_list = []
     for item in cur.fetchall():
@@ -433,7 +433,7 @@ def callback(status, result):
 def run():
     db = db_pool.get_db_pool(True)     # 初始化数据库连接池
     event_list = get_event_list(db)     # 获取等待处理的发行列表
-    pool = thread_pool.ThreadPool(10)
+    pool = thread_pool.ThreadPool(10)   # 十条进程同时运算
 
     for item in event_list:
         print(item)

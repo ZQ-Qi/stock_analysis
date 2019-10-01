@@ -80,3 +80,39 @@ where zjhhy like '交通运输、仓储业-%';
 select count(*) from event_list;
 select count(*) from event_list where zjhhy is Null;
 select count(*) from event_list where zjhhy like '%*';
+
+select distinct gpdm from event_list where zjhhy is Null;
+
+select distinct zjhhy from event_list
+group by zjhhy
+order by zjhhy;
+
+select gpdm,dt,zjhhy from event_list
+where zjhhy like '信息技术业%';
+
+select gpdm,dt,zjhhy,hydm from event_list
+where zjhhy like '综合%';
+
+update event_list
+set hydm = 'S' where zjhhy like '综合%';
+
+select hydm, count(hydm) from event_list
+group by hydm;
+
+# 查找事件表中主承销商或财务顾问还有某些关键字的事件
+select gpdm, dt, zcxs, cwgw from event_list
+where zcxs like '北京中和%' or cwgw like '北京中和%' order by dt;
+
+desc event_list;
+
+select * from event_list
+where day_before < 365 or day_after < 365 order by gpdm;
+
+select * from event_list
+where gpdm = '000001';
+
+show create table event_list;
+show create table gghslb;
+show create table reg_res;
+
+select distinct var from reg_res;

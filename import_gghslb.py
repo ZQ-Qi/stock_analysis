@@ -1,5 +1,6 @@
 """
 本文档用于读取并导入个股换手率表到数据库
+2019-09-01
 """
 import db_pool
 import time
